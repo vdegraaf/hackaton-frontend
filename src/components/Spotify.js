@@ -5,18 +5,18 @@ import request from 'superagent'
 import './spotify.css';
 
 const baseUrl = 'https://api.spotify.com'
-const accessToken = 'BQAWOUKA4PC15i_kmJdayt2mjbSqy3vhpsLSYXea5HQUXP7edt4EP4tGZ-J0Zz1ZB9pvtIXGWxnU1hjOyb_wljA1-pkpB2BZg369NX6z1qKDJHsLpwjhB_27eFsEKqHgf2DpkJuLFN0aMARwO7uvcnvPrcYYIruFwXOgxqgRwFLiFmjiTPfowuFHOEg7xuUqky-7CR8Q7hh1rGR418cCxA3dycIFPBk8d_WZ9ftR6NwAJiYg-2yNZC9u4SePibiS6IWnombQXN-w'
+const accessToken = 'BQDr8tyBGWskhhx9eoPVjTOJ3f8Nf9CNfpqbDy4EXfYcs48o3aTrHpK7qYOz9pavyAoV2wf6SqXu-MR71H8'
 const artist = 'spice girls'
 const track = 'wanna'
 
 
 const requestRecord = () => {
   return request
-    .get('http://www.mocky.io/v2/5d39a2b42f000049006ebce2')
-    .then((response) => {
+    .get('http://63617976.ngrok.io/api/text')
+    /*.then((response) => {
       return response.body
-    })
-    .catch(console.error)
+    })*/
+    // .catch(console.error)
 }
 
 const search = (artist, title) => {
@@ -24,13 +24,12 @@ const search = (artist, title) => {
     .get(`${baseUrl}/v1/search?q=${artist}%20${title}&type=artist,track`)
     .set('Authorization', `Bearer  ${accessToken}`)
     .then((response) => {
-      return response.body.tracks.items[0].uri
+      return response.body
     })
     .catch(console.error)
 }
 
 const isDifferentRecord = (record, result) => {
-  console.log(record, result);
   return record.artist !== result.artist && record.title !== result.title
 }
 
@@ -39,26 +38,23 @@ function Spotify() {
   let [trackUri, setTrackUri] = useState('')
   let [record, setRecord] = useState('')
   let [nameTrack, setNameTrack] = useState('')
+  let [artist, setArtist] = useState('')
 
   async function poll() {
-    const result = await requestRecord()
-
-    // if ((result && isDifferentRecord(record, result)) || Object.values(record).length == 0) {
-
-    trackUri = await search(result.artist, result.title)
-
-    setTrackUri(trackUri)
+    await requestRecord().then((res) => {
+      // console.log(res.body)
+      trackUri = getUri(res.body.arist, res.body.song)
+    })
   }
 
-  async function getUri() {
-    trackUri = await search()
+  async function getUri(artist, title) {
+    await search(artist, title)
       .then(res => {
-        nameTrack = res.body.tracks.items[0].name
-        setNameTrack(nameTrack)
-        return res.body.tracks.items[0].uri
+        console.log(res)
+        setArtist(res.tracks.items[0].artists[0].name)
+        setNameTrack(res.tracks.items[0].name)
+        setTrackUri(res.tracks.items[0].uri)
       })
-
-    setTrackUri(trackUri)
   }
 
   useEffect(() => {
@@ -66,7 +62,7 @@ function Spotify() {
   })
 
   if (trackUri) {
-    setInterval(poll, 2000)
+    // setInterval(poll, 2000)
 
     return (<>
     <SpotifyPresentational trackUri={trackUri} artist={artist} track={nameTrack}/>

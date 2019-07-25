@@ -5,7 +5,7 @@ function SpotifyPresentational({trackUri, artist, track}) {
     <div className='container'>
 
       <div className='video'>
-        <iframe src={`https://open.spotify.com/embed?uri=${trackUri}`} frameborder="0"></iframe>
+        <iframe src={`https://open.spotify.com/embed?uri=${trackUri}`} frameBorder="0"></iframe>
       </div>
       <h3>{`You're listening to ${track} of ${artist}.`}</h3>
       <h3>Let's sing along!!</h3>
