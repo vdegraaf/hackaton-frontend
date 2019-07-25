@@ -2,17 +2,14 @@ import React, {useState, useEffect} from 'react'
 import request from 'superagent'
 
 const searchLyrics = (artist, track) => {
-  console.log(artist, track)
+  
   return request
     .get(`https://api.lyrics.ovh/v1/${artist}/${track}`)
     .then(res => {
-      console.log(res.body.lyrics, 'res')
       return res.body.lyrics
     })
     .catch(console.error)
 }
-
-
 
 function Lyrics({artist, track}) {
 
@@ -26,11 +23,11 @@ function Lyrics({artist, track}) {
 
   if(lyrics) {
     return (<>
-    <div>{lyrics}</div>
+    <pre>{lyrics}</pre>
     </>
     );
   } else return (
-    <h3>loading</h3>
+    <h3>There are no lyrics available for this song</h3>
   )
 }
 

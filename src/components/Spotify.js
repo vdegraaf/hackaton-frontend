@@ -5,34 +5,40 @@ import request from 'superagent'
 import './spotify.css';
 
 const baseUrl = 'https://api.spotify.com'
-const accessToken = 'BQA-p2X4ihIAvYOe21U7li78jhU-KI9xMpzVkQW5yx_N3cpX_Pzq-7bnFwEKBSyd-vGIBkuXwgD9jyBjKyM'
-const artist = 'donavon frankenreiter'
-const track = 'hit the ground running'
+const accessToken = 'BQAWOUKA4PC15i_kmJdayt2mjbSqy3vhpsLSYXea5HQUXP7edt4EP4tGZ-J0Zz1ZB9pvtIXGWxnU1hjOyb_wljA1-pkpB2BZg369NX6z1qKDJHsLpwjhB_27eFsEKqHgf2DpkJuLFN0aMARwO7uvcnvPrcYYIruFwXOgxqgRwFLiFmjiTPfowuFHOEg7xuUqky-7CR8Q7hh1rGR418cCxA3dycIFPBk8d_WZ9ftR6NwAJiYg-2yNZC9u4SePibiS6IWnombQXN-w'
+const artist = 'spice girls'
+const track = 'wanna'
+
 
 const search = () => {
   return request
     .get(`${baseUrl}/v1/search?q=${artist}%20${track}&type=artist,track`)
     .set('Authorization', `Bearer  ${accessToken}`)
-    .then(res => {
-      return res.body.tracks.items[0].uri
-    })
+   
     .catch(console.error)
 }
 
 function Spotify() {
   
   let [trackUri, setTrackUri] = useState('')
+  let [nameTrack, setNameTrack] = useState('')
 
   async function getUri() {
     trackUri = await search()
+      .then(res => {
+        nameTrack = res.body.tracks.items[0].name
+        setNameTrack(nameTrack)
+        return res.body.tracks.items[0].uri
+      })
+
     setTrackUri(trackUri) 
   }
   getUri()
 
   if(trackUri) {
     return (<>
-    <SpotifyPresentational trackUri={trackUri}/>
-    <Lyrics artist={artist} track={track}/>
+    <SpotifyPresentational trackUri={trackUri} artist={artist} track={nameTrack}/>
+    <Lyrics artist={artist} track={nameTrack}/>
     </>
     );
   } else return (
