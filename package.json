@@ -5,6 +5,7 @@
   "dependencies": {
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-polling-hook": "git+https://github.com/vivek12345/react-polling-hook.git",
     "react-scripts": "3.0.1",
     "spotify-web-api-js": "^1.2.0",
     "superagent": "^5.1.0"
