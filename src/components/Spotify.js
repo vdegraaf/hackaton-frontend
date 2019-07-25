@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import SpotifyPresentational from './SpotifyPresentational'
+import Lyrics from './Lyrics'
 import request from 'superagent'
+import './spotify.css';
 
 const baseUrl = 'https://api.spotify.com'
 const accessToken = 'BQA-p2X4ihIAvYOe21U7li78jhU-KI9xMpzVkQW5yx_N3cpX_Pzq-7bnFwEKBSyd-vGIBkuXwgD9jyBjKyM'
@@ -30,6 +32,7 @@ function Spotify() {
   if(trackUri) {
     return (<>
     <SpotifyPresentational trackUri={trackUri}/>
+    <Lyrics artist={artist} track={track}/>
     </>
     );
   } else return (
